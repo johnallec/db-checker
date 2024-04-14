@@ -1,4 +1,4 @@
-package mainpackage.model;
+package mainpackage.controller;
 
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
