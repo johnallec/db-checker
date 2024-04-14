@@ -11,15 +11,13 @@ public class SceneHandler {
 	private Parent root;
 	private Scene scene;
 	private FXMLLoader loader;
-	
 	private static final String MAIN_PAGE_TITLE = "Database Checker";
 	private static final String MAIN_PAGE_PATH = "/mainpackage/view/mainPage.fxml";
 	private static final int MAIN_PAGE_WIDTH = 600;
 	private static final int MAIN_PAGE_HEIGH = 500;
-	
 	private static SceneHandler sh;
 	
-	public static SceneHandler getInstance() {
+	public static SceneHandler getSH() {
 		if(sh == null)
 			sh = new SceneHandler();
 		return sh;
