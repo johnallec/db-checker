@@ -1,1 +1,1 @@
-# db-checker
+# jed-tool
