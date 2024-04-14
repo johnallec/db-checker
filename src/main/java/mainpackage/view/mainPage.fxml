@@ -41,28 +41,28 @@
                               <Label layoutX="26.0" layoutY="13.0" text="Host" />
                               <Label layoutX="26.0" layoutY="42.0" text="Port" />
                               <Label layoutX="26.0" layoutY="70.0" text="Database" />
-                              <TextField layoutX="99.0" layoutY="10.0" prefHeight="25.0" prefWidth="200.0" />
-                              <TextField layoutX="99.0" layoutY="39.0" prefHeight="25.0" prefWidth="75.0" />
-                              <TextField layoutX="99.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0" />
+                              <TextField fx:id="dbHostTextField" layoutX="99.0" layoutY="10.0" prefHeight="25.0" prefWidth="200.0" />
+                              <TextField fx:id="dbPortTextField" layoutX="99.0" layoutY="39.0" prefHeight="25.0" prefWidth="75.0" />
+                              <TextField fx:id="dbNameTextField" layoutX="99.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0" />
                            </children>
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
                               <Label layoutX="7.0" layoutY="18.0" text="Username" />
                               <Label layoutX="7.0" layoutY="59.0" text="Password" />
-                              <TextField layoutX="75.0" layoutY="14.0" prefHeight="25.0" prefWidth="161.0" />
-                              <TextField layoutX="75.0" layoutY="55.0" prefHeight="25.0" prefWidth="161.0" />
+                              <TextField fx:id="dbUsernameTextField" layoutX="75.0" layoutY="14.0" prefHeight="25.0" prefWidth="161.0" />
+                              <TextField fx:id="dbPasswordTextField" layoutX="75.0" layoutY="55.0" prefHeight="25.0" prefWidth="161.0" />
                            </children>
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
                               <Label layoutX="7.0" layoutY="93.0" text="URL" />
-                              <TextField layoutX="37.0" layoutY="89.0" prefHeight="25.0" prefWidth="237.0" text="jdbc:postgresql://localhost:5432/postgres" />
+                              <TextField fx:id="dbURLTextField" layoutX="37.0" layoutY="89.0" prefHeight="25.0" prefWidth="237.0" />
                            </children>
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <Button layoutX="218.0" layoutY="2.0" mnemonicParsing="false" text="Connect" />
+                              <Button fx:id="dbConnectButton" layoutX="218.0" layoutY="2.0" mnemonicParsing="false" text="Connect" />
                            </children>
                         </Pane>
                      </children>
