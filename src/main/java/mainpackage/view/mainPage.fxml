@@ -2,7 +2,7 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -45,7 +45,7 @@
                   <TextField fx:id="dbHostTextField" layoutX="99.0" layoutY="10.0" prefHeight="25.0" prefWidth="200.0" />
                   <TextField fx:id="dbPortTextField" layoutX="99.0" layoutY="39.0" prefHeight="25.0" prefWidth="75.0" />
                   <TextField fx:id="dbNameTextField" layoutX="99.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0" />
-                  <ComboBox fx:id="dbTypeComboBox" layoutX="99.0" layoutY="96.0" prefHeight="25.0" prefWidth="75.0" />
+                  <ChoiceBox fx:id="dbTypeChoiceBox" layoutX="99.0" layoutY="96.0" prefWidth="150.0" />
                </children>
             </Pane>
             <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">

@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -29,7 +29,7 @@ public class Login implements Initializable {
 	@FXML
 	private RadioButton classicRadioButton;
 	@FXML
-	private ComboBox<String> dbTypeComboBox;
+	private ChoiceBox<String> dbTypeChoiceBox;
 	
 	private final String[] allowedDBTypes = {"postgresql", "oracle"};
 	
@@ -48,11 +48,10 @@ public class Login implements Initializable {
 		
 		//activate the classic access mode as default
 		activateRadioButton(classicRadioButton);
-		// SOLVE THE PROBLEM WITH THE COMBO BOX
-		dbTypeComboBox = new ComboBox<String>(FXCollections.observableArrayList(allowedDBTypes));
-		dbTypeComboBox.setValue(allowedDBTypes[0]);
-		dbTypeComboBox.setPrefWidth(123);
-		System.out.println(dbTypeComboBox.getItems());
+		
+		dbTypeChoiceBox.setItems(FXCollections.observableArrayList(allowedDBTypes));
+		dbTypeChoiceBox.setValue(allowedDBTypes[0]);
+		dbTypeChoiceBox.setValue("postgresql");
 	}
 	
 	@FXML
@@ -105,8 +104,8 @@ public class Login implements Initializable {
 			dbNameTextField.setDisable(true);
 			dbNameTextField.setOpacity(OPACITY_IF_DEACTIVATED);
 			
-			dbTypeComboBox.setDisable(true);
-			dbTypeComboBox.setOpacity(OPACITY_IF_DEACTIVATED);
+			dbTypeChoiceBox.setDisable(true);
+			dbTypeChoiceBox.setOpacity(OPACITY_IF_DEACTIVATED);
 			
 			dbURLTextField.setDisable(false);
 			dbURLTextField.setOpacity(OPACITY_IF_ACTIVATED);
@@ -124,8 +123,8 @@ public class Login implements Initializable {
 			dbNameTextField.setDisable(false);
 			dbNameTextField.setOpacity(OPACITY_IF_ACTIVATED);
 			
-			dbTypeComboBox.setDisable(false);
-			dbTypeComboBox.setOpacity(OPACITY_IF_ACTIVATED);
+			dbTypeChoiceBox.setDisable(false);
+			dbTypeChoiceBox.setOpacity(OPACITY_IF_ACTIVATED);
 		}
 	}
 
