@@ -9,6 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import mainpackage.model.DatabaseHandler;
 
 public class Login implements Initializable {
 
@@ -82,6 +83,10 @@ public class Login implements Initializable {
 			String password = dbPasswordTextField.getText();
 			assert !password.isEmpty() : "The password be specified.";
 			
+			String type = dbTypeChoiceBox.getValue();
+			assert !type.isEmpty() : "Select a database type.";
+			
+			DatabaseHandler.getInstance(host, port, name, type, username, password);
 			//System.out.println(host + " " + port + " " + name + " " + username + " " + password);
 			
 		}
@@ -89,6 +94,13 @@ public class Login implements Initializable {
 			String url = dbURLTextField.getText();
 			assert !url.isEmpty() : "The URL must be specified";
 			
+			String username = dbUsernameTextField.getText();
+			assert !username.isEmpty() : "The username must be specified.";
+			
+			String password = dbPasswordTextField.getText();
+			assert !password.isEmpty() : "The password be specified.";
+			
+			DatabaseHandler.getInstance(url, username, password);
 			//System.out.println(url);
 		}
 	}
