@@ -1,75 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="449.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="449.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainpackage.controller.Login">
    <children>
-      <TitledPane animated="false" layoutX="173.0" layoutY="52.0" prefHeight="449.0" prefWidth="672.0" text="Main page" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+      <GridPane prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="175.0" minHeight="10.0" prefHeight="175.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="268.0" minHeight="10.0" prefHeight="169.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="189.0" minHeight="0.0" prefHeight="54.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <GridPane layoutX="213.0" layoutY="181.0" prefHeight="423.0" prefWidth="670.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="175.0" minHeight="10.0" prefHeight="175.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="268.0" minHeight="10.0" prefHeight="169.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="189.0" minHeight="0.0" prefHeight="54.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                  <Label layoutX="26.0" layoutY="93.0" text="Connect by" />
+                  <Group layoutX="105.0" layoutY="93.0">
                      <children>
-                        <Pane prefHeight="200.0" prefWidth="200.0">
-                           <children>
-                              <Label layoutX="26.0" layoutY="93.0" text="Connect by" />
-                              <RadioButton layoutX="105.0" layoutY="93.0" mnemonicParsing="false" text="URL" />
-                              <RadioButton layoutX="164.0" layoutY="93.0" mnemonicParsing="false" text="Classic" />
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                              <Label layoutX="26.0" layoutY="13.0" text="Host" />
-                              <Label layoutX="26.0" layoutY="42.0" text="Port" />
-                              <Label layoutX="26.0" layoutY="70.0" text="Database" />
-                              <TextField fx:id="dbHostTextField" layoutX="99.0" layoutY="10.0" prefHeight="25.0" prefWidth="200.0" />
-                              <TextField fx:id="dbPortTextField" layoutX="99.0" layoutY="39.0" prefHeight="25.0" prefWidth="75.0" />
-                              <TextField fx:id="dbNameTextField" layoutX="99.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0" />
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <Label layoutX="7.0" layoutY="18.0" text="Username" />
-                              <Label layoutX="7.0" layoutY="59.0" text="Password" />
-                              <TextField fx:id="dbUsernameTextField" layoutX="75.0" layoutY="14.0" prefHeight="25.0" prefWidth="161.0" />
-                              <TextField fx:id="dbPasswordTextField" layoutX="75.0" layoutY="55.0" prefHeight="25.0" prefWidth="161.0" />
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                           <children>
-                              <Label layoutX="7.0" layoutY="93.0" text="URL" />
-                              <TextField fx:id="dbURLTextField" layoutX="37.0" layoutY="89.0" prefHeight="25.0" prefWidth="237.0" />
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <Button fx:id="dbConnectButton" layoutX="218.0" layoutY="2.0" mnemonicParsing="false" text="Connect" />
-                           </children>
-                        </Pane>
+                        <RadioButton fx:id="urlRadioButton" mnemonicParsing="false" onMouseClicked="#urlRadioButtonClicked" text="URL" />
+                        <RadioButton fx:id="classicRadioButton" layoutX="59.0" mnemonicParsing="false" onMouseClicked="#classicRadioButtonClicked" text="Classic" />
                      </children>
-                  </GridPane>
+                  </Group>
                </children>
-            </AnchorPane>
-        </content>
-      </TitledPane>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <Label layoutX="26.0" layoutY="13.0" text="Host" />
+                  <Label layoutX="26.0" layoutY="42.0" text="Port" />
+                  <Label layoutX="26.0" layoutY="70.0" text="Database" />
+                  <TextField fx:id="dbHostTextField" layoutX="99.0" layoutY="10.0" prefHeight="25.0" prefWidth="200.0" />
+                  <TextField fx:id="dbPortTextField" layoutX="99.0" layoutY="39.0" prefHeight="25.0" prefWidth="75.0" />
+                  <TextField fx:id="dbNameTextField" layoutX="99.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label layoutX="7.0" layoutY="18.0" text="Username" />
+                  <Label layoutX="7.0" layoutY="59.0" text="Password" />
+                  <TextField fx:id="dbUsernameTextField" layoutX="75.0" layoutY="14.0" prefHeight="25.0" prefWidth="161.0" />
+                  <TextField fx:id="dbPasswordTextField" layoutX="75.0" layoutY="55.0" prefHeight="25.0" prefWidth="161.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <Label layoutX="7.0" layoutY="93.0" text="URL" />
+                  <TextField fx:id="dbURLTextField" layoutX="37.0" layoutY="89.0" prefHeight="25.0" prefWidth="237.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="dbConnectButton" layoutX="218.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#connectButtonClicked" text="Connect" />
+               </children>
+            </Pane>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>
