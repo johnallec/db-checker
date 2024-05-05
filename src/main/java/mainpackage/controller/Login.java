@@ -1,6 +1,7 @@
 package mainpackage.controller;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import mainpackage.model.DatabaseHandler;
+import mainpackage.model.SceneHandler;
 
 public class Login implements Initializable {
 
@@ -67,42 +69,61 @@ public class Login implements Initializable {
 	
 	@FXML
 	private void connectButtonClicked() {
+		/*if(DatabaseHandler.DB_TEST) {
+			DatabaseHandler.getInstance("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres");
+			SceneHandler.getSH().switchScene(SceneHandler.SEARCH_PAGE_PATH, "Search Page", 770, 500);
+			return;
+		}*/
+		
 		if(radioButtonGroup.getSelectedToggle() == classicRadioButton){
-			String host = dbHostTextField.getText();
-			assert !host.isEmpty() : "The host must be specified.";
 			
-			String port = dbPortTextField.getText();
-			assert !port.isEmpty() : "The port must be specified.";
-			
-			String name = dbNameTextField.getText();
-			assert !name.isEmpty() : "The DB name must be specified.";
-			
-			String username = dbUsernameTextField.getText();
-			assert !username.isEmpty() : "The username must be specified.";
-			
-			String password = dbPasswordTextField.getText();
-			assert !password.isEmpty() : "The password be specified.";
-			
-			String type = dbTypeChoiceBox.getValue();
-			assert !type.isEmpty() : "Select a database type.";
-			
-			DatabaseHandler.getInstance(host, port, name, type, username, password);
-			//System.out.println(host + " " + port + " " + name + " " + username + " " + password);
+			if(dbHostTextField.getText().isEmpty() ||
+				dbPortTextField.getText().isEmpty() ||
+				dbNameTextField.getText().isEmpty() ||
+				dbUsernameTextField.getText().isEmpty() ||
+				dbPasswordTextField.getText().isEmpty()) {
+				
+				SceneHandler.getSH().showError("Fill out the mandatory fields.");
+			}
+			else {
+				String host = dbHostTextField.getText();
+				String port = dbPortTextField.getText();
+				String name = dbNameTextField.getText();
+				String username = dbUsernameTextField.getText();
+				String password = dbPasswordTextField.getText();
+				String type = dbTypeChoiceBox.getValue();
+				
+				try {
+					DatabaseHandler.getInstance(host, port, name, type, username, password);
+					SceneHandler.getSH().switchScene(SceneHandler.SEARCH_PAGE_PATH, host, 770, 500);
+				} catch (SQLException e) {
+					SceneHandler.getSH().showError(e.getMessage());
+				}
+			}
 			
 		}
 		else if(radioButtonGroup.getSelectedToggle() == urlRadioButton){
-			String url = dbURLTextField.getText();
-			assert !url.isEmpty() : "The URL must be specified";
 			
-			String username = dbUsernameTextField.getText();
-			assert !username.isEmpty() : "The username must be specified.";
-			
-			String password = dbPasswordTextField.getText();
-			assert !password.isEmpty() : "The password be specified.";
-			
-			DatabaseHandler.getInstance(url, username, password);
-			//System.out.println(url);
+			if(dbURLTextField.getText().isEmpty() ||
+				dbUsernameTextField.getText().isEmpty() ||
+				dbPasswordTextField.getText().isEmpty()) {
+				
+				SceneHandler.getSH().showError("Fill out the mandatory fields.");
+			}
+			else {
+				String url = dbURLTextField.getText();
+				String username = dbUsernameTextField.getText();
+				String password = dbPasswordTextField.getText();
+				try {
+					DatabaseHandler.getInstance(url, username, password);
+					SceneHandler.getSH().switchScene(SceneHandler.SEARCH_PAGE_PATH, url, 770, 500);
+				} catch (SQLException e) {
+					SceneHandler.getSH().showError(e.getMessage());
+				}
+			}
+
 		}
+		
 	}
 	
 	private void activateRadioButton(RadioButton rb) {
