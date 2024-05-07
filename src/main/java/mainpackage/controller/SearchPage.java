@@ -1,5 +1,6 @@
 package mainpackage.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import mainpackage.model.DatabaseHandler;
 import mainpackage.model.SceneHandler;
+import mainpackage.model.SheetCreator;
 
 public class SearchPage implements Initializable {
 
@@ -51,6 +53,9 @@ public class SearchPage implements Initializable {
 	@FXML
 	private TableColumn<String, String> notExistingTC;
 	
+	private ArrayList<String> notExistingOnes;
+	private ArrayList<String> existingOnes;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
@@ -71,18 +76,19 @@ public class SearchPage implements Initializable {
 			
 			String[] dataArray = data.split(";");
 			
-			ArrayList<String> existingOnes = DatabaseHandler.getInstance().compareItems(schema + table, comparisonAttribute, dataArray);
+			this.existingOnes = DatabaseHandler.getInstance().compareItems(schema + table, comparisonAttribute, dataArray);
 			
 			if(existingOnes == null) return;
 			
-			ArrayList<String> tempNotExistingOnes = new ArrayList<String>(Arrays.asList(dataArray));
-			tempNotExistingOnes.removeAll(existingOnes);
+			this.notExistingOnes = new ArrayList<String>(Arrays.asList(dataArray));
+			notExistingOnes.removeAll(existingOnes);
 			
 			existingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
-			existingTV.setItems(FXCollections.observableArrayList(existingOnes));
+			existingTV.setItems(FXCollections.observableArrayList(this.existingOnes));
 			
 			notExistingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
-			notExistingTV.setItems(FXCollections.observableArrayList(tempNotExistingOnes));
+			notExistingTV.setItems(FXCollections.observableArrayList(this.notExistingOnes));
+			saveResultsButtonClicked();
 		}
 		
 		/*String[] myData = {"1","2","3","9","10"};
@@ -103,6 +109,29 @@ public class SearchPage implements Initializable {
 		if(SceneHandler.getSH().showConfirmation("Are you sure you want to be disconnected from the DB?")) {
 			SceneHandler.getSH().switchScene(SceneHandler.MAIN_PAGE_PATH, SceneHandler.MAIN_PAGE_TITLE, SceneHandler.MAIN_PAGE_WIDTH, SceneHandler.MAIN_PAGE_HEIGHT);
 			DatabaseHandler.getInstance().disconnect();
+		}
+	}
+	
+	
+	private void saveResultsButtonClicked() {
+		SheetCreator sc = new SheetCreator("Results");
+		sc.createRow(0);
+		sc.createCell(0, "Existing");
+		sc.createCell(1, "Not existing");
+		
+		for(int i=0; i < (this.existingOnes.size() >= this.notExistingOnes.size() ? this.existingOnes.size() : this.notExistingOnes.size()); i++){
+			sc.createRow(i+1);
+			if(i < this.existingOnes.size()) {
+				sc.createCell(0, this.existingOnes.get(i));
+			}
+			if(i < this.notExistingOnes.size()) {
+				sc.createCell(1, this.notExistingOnes.get(i));
+			}
+		}
+		try {
+			sc.storeFile("results.xlsx");
+		} catch (IOException e) {
+			SceneHandler.getSH().showError("An error occured trying to create the file: " + e.getMessage());
 		}
 	}
 
