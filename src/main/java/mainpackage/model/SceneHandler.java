@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 
 public class SceneHandler {
 	
-	private Scene scene;
 	private Stage stage;
 	public static final String MAIN_PAGE_TITLE = "Database Checker";
 	public static final String MAIN_PAGE_PATH = "/mainpackage/view/mainPage.fxml";
@@ -31,21 +30,23 @@ public class SceneHandler {
 	
 	public void init(Stage stage) {
 		this.stage = stage;
-		setCurrentScene(MAIN_PAGE_PATH, MAIN_PAGE_WIDTH, MAIN_PAGE_HEIGHT);
-		this.stage.setScene(scene);
+		this.stage.setScene(setCurrentScene(MAIN_PAGE_PATH, MAIN_PAGE_WIDTH, MAIN_PAGE_HEIGHT));
 		this.stage.setTitle(MAIN_PAGE_TITLE);
 		this.stage.setResizable(false);
 		this.stage.show();
 	}
 	
-	private void setCurrentScene(String path, int width, int height) {
+	private Scene setCurrentScene(String path, int width, int height) {
+		Scene scene = null;
 		try {
 			FXMLLoader loader= new FXMLLoader(getClass().getResource(path));
 			Parent root = (Parent) loader.load();
-			this.scene = new Scene(root, width, height);
+			scene = new Scene(root, width, height);
 		} catch (IOException e) {
 			e.printStackTrace(); // To be modified
 		}
+		
+		return scene;
 	}
 	
 	public void switchScene(String fxmlPath, String title, int width, int heigth) {
@@ -53,11 +54,22 @@ public class SceneHandler {
 			//show an error page
 			return;
 		}
-		setCurrentScene(fxmlPath, width, heigth);
-		this.stage.setScene(scene);
+		this.stage.setScene(setCurrentScene(fxmlPath, width, heigth));
 		this.stage.setTitle(title);
 		this.stage.setResizable(false);
 		this.stage.show();
+	}
+	
+	public void openNewScene(String fxmlPath, String title, int width, int heigth) {
+		if(fxmlPath == null || width < 0 || heigth < 0) {
+			//show an error page
+			return;
+		}
+		Stage newStage = new Stage();
+		newStage.setScene(setCurrentScene(fxmlPath, width, heigth));
+		newStage.setTitle(title);
+		newStage.setResizable(false);
+		newStage.show();
 	}
 	
 	public void showError(String message) {

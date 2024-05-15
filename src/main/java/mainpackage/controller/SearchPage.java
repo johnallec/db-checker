@@ -20,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import mainpackage.model.DatabaseHandler;
 import mainpackage.model.SceneHandler;
 import mainpackage.model.SheetCreator;
+import mainpackage.model.ThreadGenerator;
 
 public class SearchPage implements Initializable {
 
@@ -68,40 +69,8 @@ public class SearchPage implements Initializable {
 			SceneHandler.getSH().showError("Fill out the mandatory fields.");
 		}
 		else {
-			String schema = schemaTF.getText().isEmpty() ? "" : schemaTF.getText() + ".";
-			
-			String table = tableTF.getText();
-			String comparisonAttribute = attributeTF.getText();
-			String data = dataTA.getText();
-			
-			String[] dataArray = data.split(";");
-			
-			this.existingOnes = DatabaseHandler.getInstance().compareItems(schema + table, comparisonAttribute, dataArray);
-			
-			if(existingOnes == null) return;
-			
-			this.notExistingOnes = new ArrayList<String>(Arrays.asList(dataArray));
-			notExistingOnes.removeAll(existingOnes);
-			
-			existingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
-			existingTV.setItems(FXCollections.observableArrayList(this.existingOnes));
-			
-			notExistingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
-			notExistingTV.setItems(FXCollections.observableArrayList(this.notExistingOnes));
-			saveResultsButtonClicked();
+			ThreadGenerator.getTG().runJob(()-> { compare(); });
 		}
-		
-		/*String[] myData = {"1","2","3","9","10"};
-		ArrayList<String> existingOnes = DatabaseHandler.getInstance().compareItems("public.stockmovement", "stock_code", myData);
-		
-		ArrayList<String> tempNotExistingOnes = new ArrayList<String>(Arrays.asList(myData));
-		tempNotExistingOnes.removeAll(existingOnes);
-		
-		existingTC.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
-		existingTV.setItems(FXCollections.observableArrayList(existingOnes));
-		
-		notExistingTC.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
-		notExistingTV.setItems(FXCollections.observableArrayList(tempNotExistingOnes));*/
 	}
 	
 	@FXML
@@ -112,6 +81,30 @@ public class SearchPage implements Initializable {
 		}
 	}
 	
+	private void compare() {
+		String schema = schemaTF.getText().isEmpty() ? "" : schemaTF.getText() + ".";
+		
+		String table = tableTF.getText();
+		String comparisonAttribute = attributeTF.getText();
+		String data = dataTA.getText();
+		
+		String[] dataArray = data.split(";");
+		
+		this.existingOnes = DatabaseHandler.getInstance().compareItems(schema + table, comparisonAttribute, dataArray);
+		
+		if(existingOnes == null) return;
+		
+		this.notExistingOnes = new ArrayList<String>(Arrays.asList(dataArray));
+		notExistingOnes.removeAll(existingOnes);
+		
+		existingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
+		existingTV.setItems(FXCollections.observableArrayList(this.existingOnes));
+		
+		notExistingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
+		notExistingTV.setItems(FXCollections.observableArrayList(this.notExistingOnes));
+		
+		saveResultsButtonClicked();
+	}
 	
 	private void saveResultsButtonClicked() {
 		SheetCreator sc = new SheetCreator("Results");
