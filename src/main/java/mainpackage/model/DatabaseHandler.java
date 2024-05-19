@@ -15,8 +15,6 @@ public class DatabaseHandler {
 	private Connection connection;
 	private StringBuilder connectionURL;
 	
-	//public static final int DB_TEST = true;//REMOVE IT
-	
 	private static DatabaseHandler dh;
 
 	public static DatabaseHandler getInstance() {
