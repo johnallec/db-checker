@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Statement;
+import java.util.HashSet;
 
 public class DatabaseHandler {
 	
@@ -60,34 +61,56 @@ public class DatabaseHandler {
 		this.connectionURL = new StringBuilder(url);
 	}
 	
-	public ArrayList<String> compareItems(String location, String compareAttribute, String[] data){
-		ArrayList<String> results = null;
+	public HashSet<String> compareItems(String location, String compareAttribute){
+		try {
+			return select(location, compareAttribute);
+		} catch (SQLException e) {
+			SceneHandler.getSH().showError(e.getMessage());
+		}
+		return null;
+	}
+	
+	public HashSet<String> compareItemsWhereClause(String location, String compareAttribute, String[] data){
+		HashSet<String> results = null;
 		
 		String[] values = data;
 		
 		for(int i=0; i < values.length; i++) {
 			try {
-				if(results == null) results = select(location,compareAttribute, values[i]);
-				else results.addAll(select(location,compareAttribute, values[i]));
+				if(results == null) results = selectWhereClause(location,compareAttribute, values[i]);
+				else results.addAll(selectWhereClause(location,compareAttribute, values[i]));
 			} catch (SQLException e) {
 				SceneHandler.getSH().showError(e.getMessage());
 				break;
 			}
 		}
-		
 		return results;
 	}
 	
-	private ArrayList<String> select(String location, String comparisonAttribute, String value) throws SQLException {
+	private HashSet<String> selectWhereClause(String location, String comparisonAttribute, String value) throws SQLException {
 		
-		ArrayList<String> results = null;
+		HashSet<String> results = null;
 		
 		StringBuilder query = new StringBuilder("select " + comparisonAttribute + " from " + location + " where " + comparisonAttribute + " = ? ;");
 
-		PreparedStatement ps = connection.prepareStatement(query.toString());
+		PreparedStatement ps = this.connection.prepareStatement(query.toString());
 		ps.setString(1, value);
 		ResultSet rs = ps.executeQuery();
-		results = new ArrayList<String>();
+		results = new HashSet<String>();
+		
+		while(rs.next()) results.add(rs.getString(1));
+
+		return results;
+	}
+	
+	private HashSet<String> select(String location, String comparisonAttribute) throws SQLException {
+		
+		HashSet<String> results = null;
+		
+		Statement s = this.connection.createStatement();
+		String query = "select " + comparisonAttribute + " from " + location + ";";
+		ResultSet rs = s.executeQuery(query);
+		results = new HashSet<String>();
 		
 		while(rs.next()) results.add(rs.getString(1));
 

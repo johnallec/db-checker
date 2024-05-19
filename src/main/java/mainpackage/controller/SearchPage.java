@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.ResourceBundle;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,11 +15,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import mainpackage.model.DatabaseHandler;
 import mainpackage.model.SceneHandler;
 import mainpackage.model.SheetCreator;
-import mainpackage.model.ThreadGenerator;
 
 public class SearchPage implements Initializable {
 
@@ -54,8 +51,8 @@ public class SearchPage implements Initializable {
 	@FXML
 	private TableColumn<String, String> notExistingTC;
 	
-	private ArrayList<String> notExistingOnes;
-	private ArrayList<String> existingOnes;
+	private HashSet<String> notExistingOnes;
+	private HashSet<String> existingOnes;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -69,7 +66,7 @@ public class SearchPage implements Initializable {
 			SceneHandler.getSH().showError("Fill out the mandatory fields.");
 		}
 		else {
-			ThreadGenerator.getTG().runJob(()-> { compare(); });
+			compare();
 		}
 	}
 	
@@ -88,22 +85,106 @@ public class SearchPage implements Initializable {
 		String comparisonAttribute = attributeTF.getText();
 		String data = dataTA.getText();
 		
+		long veryStartMillis = System.currentTimeMillis();
+		long startMillis = veryStartMillis;
+		long endMillis;
+		
 		String[] dataArray = data.split(";");
 		
-		this.existingOnes = DatabaseHandler.getInstance().compareItems(schema + table, comparisonAttribute, dataArray);
+		endMillis = System.currentTimeMillis();
+		System.out.println("Data split, time spent: ");
+		System.out.println(endMillis - startMillis);
+		startMillis = endMillis;
 		
-		if(existingOnes == null) return;
-		
-		this.notExistingOnes = new ArrayList<String>(Arrays.asList(dataArray));
-		notExistingOnes.removeAll(existingOnes);
-		
-		existingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
-		existingTV.setItems(FXCollections.observableArrayList(this.existingOnes));
-		
-		notExistingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
-		notExistingTV.setItems(FXCollections.observableArrayList(this.notExistingOnes));
+		HashSet<String> records = null;
+		if(dataArray.length > 300) {
+			//selecting all the records of the table and comparing after
+			records =  DatabaseHandler.getInstance().compareItems(schema + table, comparisonAttribute);
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Records gotten, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+			
+			this.notExistingOnes = new HashSet<String>(Arrays.asList(dataArray));
+			this.notExistingOnes.removeAll(records);
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Not existing ones created, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+			
+			this.existingOnes = new HashSet<String>(Arrays.asList(dataArray));
+			this.existingOnes.removeAll(this.notExistingOnes);
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Existing ones created, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+			
+			existingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
+			existingTV.setItems(FXCollections.observableArrayList(this.existingOnes));
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Existing ones in table, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+			
+			notExistingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
+			notExistingTV.setItems(FXCollections.observableArrayList(this.notExistingOnes));
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Not existing ones in table, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+		}
+		else {
+			//selecting using a where clause
+			this.existingOnes = DatabaseHandler.getInstance().compareItemsWhereClause(schema + table, comparisonAttribute, dataArray);
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Existing ones gotten, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+			
+			if(existingOnes == null) return;
+			
+			this.notExistingOnes = new HashSet<String>(Arrays.asList(dataArray));
+			notExistingOnes.removeAll(existingOnes);
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Not existing ones created, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+			
+			existingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
+			existingTV.setItems(FXCollections.observableArrayList(this.existingOnes));
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Existing ones in table, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+			
+			notExistingTC.setCellValueFactory(mydata -> new SimpleStringProperty(mydata.getValue()));
+			notExistingTV.setItems(FXCollections.observableArrayList(this.notExistingOnes));
+			
+			endMillis = System.currentTimeMillis();
+			System.out.println("Not existing ones in table, time spent: ");
+			System.out.println(endMillis - startMillis);
+			startMillis = endMillis;
+
+		}
 		
 		saveResultsButtonClicked();
+		
+		endMillis = System.currentTimeMillis();
+		System.out.println("File created, time spent: ");
+		System.out.println(endMillis - startMillis);
+		startMillis = endMillis;
+		
+		System.out.println("Total amount of time spent:");
+		System.out.println(System.currentTimeMillis() - veryStartMillis);
+		System.out.println("\n****************************************************************************\n");
 	}
 	
 	private void saveResultsButtonClicked() {
@@ -112,13 +193,16 @@ public class SearchPage implements Initializable {
 		sc.createCell(0, "Existing");
 		sc.createCell(1, "Not existing");
 		
-		for(int i=0; i < (this.existingOnes.size() >= this.notExistingOnes.size() ? this.existingOnes.size() : this.notExistingOnes.size()); i++){
+		ArrayList<String> existingOnesTemp = new ArrayList<String>(this.existingOnes);
+		ArrayList<String> notExistingOnesTemp = new ArrayList<String>(this.notExistingOnes);
+		
+		for(int i=0; i < (existingOnesTemp.size() >= notExistingOnesTemp.size() ? existingOnesTemp.size() : notExistingOnesTemp.size()); i++){
 			sc.createRow(i+1);
-			if(i < this.existingOnes.size()) {
-				sc.createCell(0, this.existingOnes.get(i));
+			if(i < existingOnesTemp.size()) {
+				sc.createCell(0, existingOnesTemp.get(i));
 			}
-			if(i < this.notExistingOnes.size()) {
-				sc.createCell(1, this.notExistingOnes.get(i));
+			if(i < notExistingOnesTemp.size()) {
+				sc.createCell(1, notExistingOnesTemp.get(i));
 			}
 		}
 		try {
