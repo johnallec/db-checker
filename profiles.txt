@@ -1,0 +1,2 @@
+postgres-localhost%jdbc:postgresql://localhost:5432/postgres%postgres%postgres
+another-but-the-same%jdbc:postgresql://localhost:5432/postgres%postgres%postgres

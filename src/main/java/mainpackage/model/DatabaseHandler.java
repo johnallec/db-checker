@@ -11,6 +11,9 @@ import java.util.HashSet;
 public class DatabaseHandler {
 	
 	//jdbc:postgresql://localhost:5432/postgres postgres postgres
+	//jdbc:oracle:thin:@localhost:1521:xe
+	
+	public static String[] dbTypes = {"postgresql"};
 	
 	private Connection connection;
 	private StringBuilder connectionURL;
@@ -127,12 +130,8 @@ public class DatabaseHandler {
 		dh = null;
 	}
 	
-	public void createSQLScript() {
-		//interactive way of inserting input by the user, or, raw sql script (toggle raw or interactive oprions)
-	}
-	
-	public void executeSQLScript(String script) {
-		
+	public String getURL() {
+		return this.connectionURL.toString();
 	}
 
 }
