@@ -11,21 +11,35 @@
 	    <artifactId>postgresql</artifactId>
 	    <version>42.7.3</version>
 	</dependency>
-	<dependency>
-	    <groupId>org.openjfx</groupId>
-	    <artifactId>javafx</artifactId>
-	    <version>12</version>
-	    <type>pom</type>
+	<dependency> 
+	  <groupId>org.apache.poi</groupId>
+	  <artifactId>poi</artifactId> 
+	  <version>5.2.5</version> 
+	</dependency> 
+	<dependency> 
+	  <groupId>org.apache.poi</groupId> 
+	  <artifactId>poi-ooxml</artifactId> 
+	  <version>5.2.5</version> 
 	</dependency>
 	<dependency>
-		<groupId>org.openjfx</groupId>
-		<artifactId>javafx-controls</artifactId>
-		<version>12</version>
+	  <groupId>org.jxls</groupId>
+	  <artifactId>jxls-jexcel</artifactId>
+	  <version>1.0.9</version>
 	</dependency>
 	<dependency>
-	    <groupId>org.openjfx</groupId>
-	    <artifactId>javafx-fxml</artifactId>
-	    <version>22</version>
+	    <groupId>org.dhatim</groupId>
+	    <artifactId>fastexcel-reader</artifactId>
+	    <version>0.17.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.dhatim</groupId>
+	    <artifactId>fastexcel</artifactId>
+	    <version>0.17.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.oracle.database.jdbc</groupId>
+	    <artifactId>ojdbc8</artifactId>
+	    <version>23.2.0.0</version>
 	</dependency>
   </dependencies>
   <build>
